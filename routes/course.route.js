@@ -1,6 +1,5 @@
 import express from "express";
 import {
-  buyCourses,
   buyCourseWithoutPayment,
   courseDetails,
   createCourse,
