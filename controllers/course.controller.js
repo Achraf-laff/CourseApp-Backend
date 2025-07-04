@@ -132,44 +132,44 @@ export const courseDetails = async (req, res) => {
   }
 };
 
-import Stripe from "stripe";
-import config from "../config.js";
-const stripe = new Stripe(config.STRIPE_SECRET_KEY);
-console.log(config.STRIPE_SECRET_KEY);
-export const buyCourses = async (req, res) => {
-  const { userId } = req;
-  const { courseId } = req.params;
+// import Stripe from "stripe";
+// import config from "../config.js";
+// const stripe = new Stripe(config.STRIPE_SECRET_KEY);
+// console.log(config.STRIPE_SECRET_KEY);
+// export const buyCourses = async (req, res) => {
+//   const { userId } = req;
+//   const { courseId } = req.params;
 
-  try {
-    const course = await Course.findById(courseId);
-    if (!course) {
-      return res.status(404).json({ errors: "Course not found" });
-    }
-    const existingPurchase = await Purchase.findOne({ userId, courseId });
-    if (existingPurchase) {
-      return res
-        .status(400)
-        .json({ errors: "User has already purchased this course" });
-    }
+//   try {
+//     const course = await Course.findById(courseId);
+//     if (!course) {
+//       return res.status(404).json({ errors: "Course not found" });
+//     }
+//     const existingPurchase = await Purchase.findOne({ userId, courseId });
+//     if (existingPurchase) {
+//       return res
+//         .status(400)
+//         .json({ errors: "User has already purchased this course" });
+//     }
 
-    // stripe payment code goes here!!
-    const amount = course.price;
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: amount,
-      currency: "usd",
-      payment_method_types: ["card"],
-    });
+//     // stripe payment code goes here!!
+//     const amount = course.price;
+//     const paymentIntent = await stripe.paymentIntents.create({
+//       amount: amount,
+//       currency: "usd",
+//       payment_method_types: ["card"],
+//     });
 
-    res.status(201).json({
-      message: "Course purchased successfully",
-      course,
-      clientSecret: paymentIntent.client_secret,
-    });
-  } catch (error) {
-    res.status(500).json({ errors: "Error in course buying" });
-    console.log("error in course buying ", error);
-  }
-};
+//     res.status(201).json({
+//       message: "Course purchased successfully",
+//       course,
+//       clientSecret: paymentIntent.client_secret,
+//     });
+//   } catch (error) {
+//     res.status(500).json({ errors: "Error in course buying" });
+//     console.log("error in course buying ", error);
+//   }
+// };
 
 
 // Function to simulate buying a course without payment
